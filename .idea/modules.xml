@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../github/Toolset/.idea/Toolset.iml" filepath="$PROJECT_DIR$/../../github/Toolset/.idea/Toolset.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../graphicsProject/.idea/graphicsProject.iml" filepath="$PROJECT_DIR$/../graphicsProject/.idea/graphicsProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../markupSystem/.idea/markupSystem.iml" filepath="$PROJECT_DIR$/../markupSystem/.idea/markupSystem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../pythonNet/.idea/pythonNet.iml" filepath="$PROJECT_DIR$/../pythonNet/.idea/pythonNet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/pythonNotes.iml" filepath="$PROJECT_DIR$/.idea/pythonNotes.iml" />
+    </modules>
+  </component>
+</project>
