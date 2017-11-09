@@ -1,0 +1,484 @@
+<!DOCTYPE Html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="enjoy today, enjoy coding" />
+<meta name="keywords" content="java,android,code,shell,gradle,grvooy,kotlin,python,脚本,配置,android studio,日记,程序员,bug" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+<title>Servlet 使用介绍(2) | Enjoytoday,EnjoyCoding</title>
+<link rel="icon" href="http://www.enjoytoday.cn/resource/img/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="http://www.enjoytoday.cn/resource/css/style.css">
+<link rel="stylesheet" media="screen and (max-width:770px)" href="http://www.enjoytoday.cn/resource/css/responsive.css">
+<script type="text/javascript" src="http://www.enjoytoday.cn/resource/js/jquery-1.9.1.min.js"></script>
+<!--  添加百度统计js -->
+<script type="text/javascript" src="http://www.enjoytoday.cn/resource/baidu/baidu_statistics.js"></script>
+<!--[if IE 6]>
+<script type="text/javascript" src="http://www.enjoytoday.cn/resource/js/ie6.js"></script>
+<![endif]-->
+<link rel="alternate" type="application/rss+xml" href="http://www.enjoytoday.cn/feed" title="Enjoytoday,EnjoyCoding" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.enjoytoday.cn/xmlrpc/rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.enjoytoday.cn/xmlrpc/wlwmanifest" />
+
+
+</head>
+<body>
+  <div id="header">
+  <div id="menu" class="clearfix">
+    <ul>
+      <li><a href="http://www.enjoytoday.cn">首页</a>
+        <ul>
+          <li><a href="http://www.enjoytoday.cn/backend/login">登录</a></li>
+        </ul>
+      </li>
+      
+        <li><a href="http://www.enjoytoday.cn/categorys/日记">日记</a>
+        </li>
+        <li><a href="http://www.enjoytoday.cn/categorys/bug">bug</a>
+        </li>
+        <li><a href="http://www.enjoytoday.cn/categorys/android">android</a>
+        </li>
+        <li><a href="http://www.enjoytoday.cn/categorys/java">java</a>
+        </li>
+        <li><a href="http://www.enjoytoday.cn/categorys/Gradle">Gradle</a>
+        </li>
+        <li><a href="http://www.enjoytoday.cn/categorys/工具">工具</a>
+        </li>
+        <li><a href="http://www.enjoytoday.cn/categorys/python">python</a>
+        </li>
+        <li><a href="http://www.enjoytoday.cn/categorys/kotlin">kotlin</a>
+        </li>
+        <li><a href="http://www.enjoytoday.cn/categorys/net">net</a>
+        </li>
+      
+      <li><a href="http://www.enjoytoday.cn/sitemap">文章归档</a></li>
+    </ul>
+  </div>
+  <h1 id="logo"><a href="http://www.enjoytoday.cn/">Enjoytoday,EnjoyCoding</a></h1>
+  <h2 id="tagline">飞云的博客</h2>
+  <a id="menu_button" href="#"><i id="icon_menu"></i></a>
+</div><div id="content" class="clearfix">
+    <div id="left_col" class="clearfix">
+      <div id="bread_crumb">
+  <ul class="clearfix">
+   <li><a title="首页" href="http://www.enjoytoday.cn">首页</a></li>
+   <li><a href="http://www.enjoytoday.cn/categorys/java">java</a></li>
+   <li class="last">Servlet 使用介绍(2)</li>
+  </ul>
+</div>
+<div class="post_wrap clearfix">
+  <div class="post">
+   <h3 class="title"><span>Servlet 使用介绍(2)</span></h3>
+   <div class="post_content">
+     <div id="epiceditor-preview">
+ <div id="epiceditor-preview"> 
+  <h3>说明</h3> 
+  <p>本篇由于介绍Servlet容器回传请求方法service(ServletRequest req, ServletResponse res);传入参数用户请求参数request和请求返回参数response的介绍。 </p> 
+  <h3>request和response</h3> 
+  <p>Servlet-api.jar 中定义了两个基本的接口用于处理用户请求处理(ServletRequest)和用户响应返回（ServletResponse）。同时，对应的javax.servlet.http中对其进行扩展，针对该接口重定义了两个对应的接口:<strong>HttpServletRequest和HttpServletResponse</strong>,这里主要通过源码介绍其基本的用法，后面会通过示例对其进行扩展演示使用方法。 </p> 
+  <ol> 
+   <li>Request</li> 
+  </ol> 
+  <p>用户请求，即用户对服务端发起的用户请求数据，servlet-api.jar中提供了两个接口:一个通用原始的ServletRequest,一个针对http协议的接口HttpServletRequest(继承自ServletRequest). 如下，为ServletRequest的源码: </p> 
+  <pre><code>
+package javax.servlet;
+
+import java.io.<em>; import java.util.</em>;
+
+public interface ServletRequest {
+
+    /<strong> <em>通过参数名获取value,若参数名不存在，返回null. </em> 获取的attribute可能是servlet设置的客户端信息，也可以是 ＊通过setAttribute设置的attribute. <em> </em>/ public Object getAttribute(String name); /</strong>
+      <em>attribute的所有属性名集合. </em>/
+    public Enumeration getAttributeNames();
+
+
+    /<strong> <em>返回正文中的字串编码 </em>/ public String getCharacterEncoding(); public void setCharacterEncoding(String env) throws UnsupportedEncodingException; /</strong>
+      <em>返回正文的长度，若请求失败（未知），返回-1. </em>/
+    public int getContentLength();
+
+
+    /<strong> <em>获取正文MIME类型，获取失败返回null. </em>/ public String getContentType(); /</strong>
+      <em>获取输入流,读取请求内容,ServletInputStream继承了InputStream方法，添加按行读取 </em>方法
+      <em>/ public ServletInputStream getInputStream() throws IOException; /** </em>返回请求的参数通过给定的name(单个数值时)，返回String或者null.
+         <em>按顺序匹配，匹配首个name. </em>/
+    public String getParameter(String name);
+
+     /<strong> <em>返回Enumeration对象，空的或者多个String集合. </em>/ public Enumeration getParameterNames(); public String[] getParameterValues(String name); public Map getParameterMap(); /</strong>
+     <em>返回请求协议 </em>/
+    public String getProtocol();
+
+
+    /<strong> <em>请求scheme. </em>/ public String getScheme(); /</strong>
+     <em>获取服务器的host名 </em>/
+    public String getServerName();
+
+
+    /<strong> <em>请求服务端监听端口 </em>/ public int getServerPort(); /</strong>
+    <em>获取一个BufferedReader输入流 </em>/
+    public BufferedReader getReader() throws IOException;
+
+    /<strong> <em>返回客户端的ip地址 </em>/ public String getRemoteAddr(); /</strong>
+     <em>返回客户端的主机名 </em>/
+    public String getRemoteHost();
+
+
+    public void setAttribute(String name, Object o);
+
+
+
+    public void removeAttribute(String name);
+
+
+
+
+    /<strong> <em>返回客户端的Locale环境 </em>/ public Locale getLocale(); /</strong>
+     <em>默认返回Local的Enumeration. ＊／ public Enumeration getLocales(); /** </em>是否做了安全策略(HTTPS)
+     <em>/ public boolean isSecure(); /** </em>获取一个RequestDispatcher对象，可用来做跳转使用.
+     <em>/ public RequestDispatcher getRequestDispatcher(String path); /** </em> @deprecated As of Version 2.1 of the Java Servlet API,
+     <em> use {@link ServletContext#getRealPath} instead. </em>/
+    public String getRealPath(String path);
+
+
+    /<strong> <em> </em> @since Servlet 2.4 */<br> public int getRemotePort(); /</strong>
+     <em> </em> @since Servlet 2.4
+     <em>/ public String getLocalName(); /** </em>
+     <em> @since Servlet 2.4 </em>
+     <em>/<br> public String getLocalAddr(); /** </em>
+     <em> @since Servlet 2.4 </em>/
+    public int getLocalPort();
+
+
+    /<strong> <em> </em> @since Servlet 3.0 */ public ServletContext getServletContext(); /</strong>
+     <em> </em> @since Servlet 3.0
+     <em>/ public AsyncContext startAsync() throws IllegalStateException; /** </em>
+     <em> @since Servlet 3.0 </em>/
+    public AsyncContext startAsync(ServletRequest servletRequest,
+                                   ServletResponse servletResponse)
+            throws IllegalStateException;
+
+
+    /<strong> <em> </em> @since Servlet 3.0 */ public boolean isAsyncStarted(); /</strong>
+     <em> </em> @since Servlet 3.0
+     <em>/ public boolean isAsyncSupported(); /** </em>
+    <em> @since Servlet 3.0 </em>/
+    public AsyncContext getAsyncContext();
+
+    /<strong> <em> </em> @since Servlet 3.0 */ public DispatcherType getDispatcherType(); }</strong></code></pre>
+  <strong> <p>如上，为ServletRequest的源码，主要是获取请求参数和输入流。 </p> 
+   <ol> 
+    <li>Response</li> 
+   </ol> <p>用户请求响应，响应返回用户请求数据，和Request类似，主要是获取客户端和服务端基本信息以及获取一个输出流用于返回响应数据。源码如下: </p> </strong>
+  <pre><strong><code>public interface ServletResponse { public String getCharacterEncoding(); /</code></strong><code>
+     <em> @since Servlet 2.4 </em>/
+
+    public String getContentType();
+
+
+
+    /<em>＊ </em>获取输出流ServletOutputStream
+     <em>/ public ServletOutputStream getOutputStream() throws IOException; /** ＊获取输出流PrintWriter </em>/
+    public PrintWriter getWriter() throws IOException;
+
+
+    /<strong> <em> </em> @since Servlet 2.4 <em> </em>/ public void setCharacterEncoding(String charset); public void setContentLength(int len); public void setContentType(String type); public void setBufferSize(int size); public int getBufferSize(); public void flushBuffer() throws IOException; /</strong>
+     <em> </em> @since Servlet 2.3
+     */
+
+    public void resetBuffer();
+
+    public boolean isCommitted();
+
+
+    public void reset();
+
+
+    public void setLocale(Locale loc);
+
+
+    public Locale getLocale();
+
+}</code></pre> 
+  <p>返回较为简单，主要是通过输出流，将需要返回的数据写入即可。 servlet目前貌似只支持htpp协议，Tomcat的对应连接器配置如下:</p> 
+  <p> <code>  </code> </p> 
+  <p> Tomcat会对于请求的数据格式进行验证，若非http格式数据会禁止访问，返回404。因此一般对于servlet的创建需要继承HttpServlet来处理。</p> 
+  <p><a href="http://www.enjoytoday.cn">Enjoytoday,EnjoyCoding</a> </p> 
+ </div>
+</div><div style="margin-top: 15px; font-style: italic;">
+           <p style="margin:0;"><strong>原创文章，转载请注明：</strong>转载自<a href="http://www.enjoytoday.cn">Enjoytoday,EnjoyCoding – www.enjoytoday.cn</a></p>
+         </div>
+       </div>
+  </div>
+  <div class="meta">
+    <ul>
+     <li class="post_date clearfix">
+       <span class="date">06</span>
+       <span class="month">Aug</span>
+       <span class="year">2017</span>
+     </li>
+     <li class="post_read">127人阅读</li>
+     <li class="post_category"><a href="http://www.enjoytoday.cn/categorys/java">java</a></li>
+     <li class="post_author">
+       <a title="由hfcai发布" href="#">hfcai</a>
+     </li>
+     <li class="post_comment">
+       <a title="Servlet 使用介绍(2)" href="#respond">发表评论</a>
+     </li>
+    </ul>
+  </div>
+</div>
+<div id="comments_wrapper">
+        <div id="comment_header" class="clearfix">
+          <span class="comments_right">评论 (0)</span>
+        </div>
+        <div id="comments">
+          <div id="comment_area">
+           <ol class="commentlist"><li id="nocomment" class="comment"><div class="comment-content"><p>暂无评论</p></div></li></ol>
+             </div>
+          <fieldset id="respond" class="comment_form_wrapper">
+<div id="cancel_comment_reply">
+     <a href="#respond" rel="nofollow">点击这里取消回复。</a>
+  </div>
+ <!--  <form method="post" action="/comments" id="comment_form"> -->
+    <input type="hidden" id="postid" name="postid" value="362" />
+    <input type="hidden" id="comment_parent" name="parent" />
+    <div id="guest_info">
+      <div id="guest_name">
+       <label for="author"><span>昵称</span>( 必须 )</label>
+       <input id="author" autocomplete="off" type="text" aria-required="true" size="22" name="creator">
+      </div>
+      <div id="guest_email">
+        <label for="email"><span>E-MAIL</span>( 必须 ) - 不会公开 -</label>
+        <input id="email" autocomplete="off" type="text" aria-required="true" size="22" name="email">
+      </div>
+      <div id="guest_url">
+        <label for="url"><span>网址</span></label>
+        <input id="url" type="text" tabindex="3" size="22" placeholder="http://" name="url">
+      </div>
+     </div>
+    <div id="comment_textarea">
+      <textarea id="comment" tabindex="4" rows="10" cols="50" name="content"></textarea>
+    </div>
+    <div id="submit_comment_wrapper">
+      <input id="submit_comment" type="button" value="发表评论" >
+    </div>
+<!--   </form> -->
+ </fieldset>
+<script src="http://www.enjoytoday.cn/resource/js/zblog.js"></script>
+</div>
+      </div>
+      <div id="previous_next_post">
+        <div class="clearfix">
+          <p id="prev_post"><a href="361">Servlet 使用介绍(1)</a></p><p id="next_post"><a href="363">Servlet 使用介绍(3)</a></p></div>
+      </div>
+    </div>
+    <div id="post_mask"></div>
+    <div id="right_col">
+      <div id="introduction_widget" class="side_widget clearfix">
+       <h3 class="headline">About</h3>
+       <ul id="social_link">
+         <li class="rss_button"><a target="_blank" href="http://www.enjoytoday.cn/feed"></a></li>
+         <li class="github_button"><a target="_blank" href="https://github.com/dongfangshangren"></a></li>
+       </ul>
+       <p>enjoy today,enjoy coding. </p>
+        <div id="search_area" class="clearfix">
+          <form method="get" action="http://www.enjoytoday.cn">
+            <div class="search_input">
+              <input type="text" autocomplete="off" name="word" placeholder="搜索一下" />
+            </div>
+            <div class="search_button">
+              <input type="submit" value="Search" />
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="side_widget clearfix">
+  <h3 class="headline">近期文章</h3>
+  <ul>
+          <li><a href="http://www.enjoytoday.cn/posts/419">Android插件基础之类加载器学习</a></li>
+      <li><a href="http://www.enjoytoday.cn/posts/399">JSP的介绍</a></li>
+      <li><a href="http://www.enjoytoday.cn/posts/398">Process finished with exit code 139 (interrupted by signal 11: SIGSEGV)</a></li>
+      <li><a href="http://www.enjoytoday.cn/posts/397">kotlinx.android.synthetic.** 坑点</a></li>
+      <li><a href="http://www.enjoytoday.cn/posts/394">Kotlin Parameter specified as non-null is null</a></li>
+      <li><a href="http://www.enjoytoday.cn/posts/369">Android 图表控件的使用</a></li>
+      <li><a href="http://www.enjoytoday.cn/posts/365">使用kotlin开发android</a></li>
+      <li><a href="http://www.enjoytoday.cn/posts/363">Servlet 使用介绍(3)</a></li>
+      <li><a href="http://www.enjoytoday.cn/posts/362">Servlet 使用介绍(2)</a></li>
+      <li><a href="http://www.enjoytoday.cn/posts/361">Servlet 使用介绍(1)</a></li>
+  </ul>
+</div><div class="side_widget clearfix">
+   <h3 class="headline">标签</h3>
+   <div id="tagcloud">
+            <a style="font-size:17pt;" 
+            href="http://www.enjoytoday.cn/tags/ClassLoader" title="1个话题">ClassLoader</a>
+       <a style="font-size:11pt;" 
+            href="http://www.enjoytoday.cn/tags/web" title="3个话题">web</a>
+       <a style="font-size:17pt;" 
+            href="http://www.enjoytoday.cn/tags/jsp" title="1个话题">jsp</a>
+       <a style="font-size:13pt;" 
+            href="http://www.enjoytoday.cn/tags/SIGSEGV" title="1个话题">SIGSEGV</a>
+       <a style="font-size:14pt;" 
+            href="http://www.enjoytoday.cn/tags/extensions" title="1个话题">extensions</a>
+       <a style="font-size:17pt;" 
+            href="http://www.enjoytoday.cn/tags/Unresolved" title="1个话题">Unresolved</a>
+       <a style="font-size:10pt;" 
+            href="http://www.enjoytoday.cn/tags/piechart" title="1个话题">piechart</a>
+       <a style="font-size:15pt;" 
+            href="http://www.enjoytoday.cn/tags/barchart" title="1个话题">barchart</a>
+       <a style="font-size:15pt;" 
+            href="http://www.enjoytoday.cn/tags/kotlin" title="4个话题">kotlin</a>
+       <a style="font-size:17pt;" 
+            href="http://www.enjoytoday.cn/tags/linechart" title="1个话题">linechart</a>
+       <a style="font-size:16pt;" 
+            href="http://www.enjoytoday.cn/tags/andorid" title="2个话题">andorid</a>
+       <a style="font-size:14pt;" 
+            href="http://www.enjoytoday.cn/tags/Demo" title="1个话题">Demo</a>
+       <a style="font-size:14pt;" 
+            href="http://www.enjoytoday.cn/tags/Servlet" title="3个话题">Servlet</a>
+       <a style="font-size:17pt;" 
+            href="http://www.enjoytoday.cn/tags/ServletResponse" title="1个话题">ServletResponse</a>
+       <a style="font-size:17pt;" 
+            href="http://www.enjoytoday.cn/tags/ServletRequest" title="1个话题">ServletRequest</a>
+       <a style="font-size:15pt;" 
+            href="http://www.enjoytoday.cn/tags/ServletContext" title="1个话题">ServletContext</a>
+       <a style="font-size:11pt;" 
+            href="http://www.enjoytoday.cn/tags/ServletConfig" title="1个话题">ServletConfig</a>
+       <a style="font-size:19pt;" 
+            href="http://www.enjoytoday.cn/tags/HttpServlet" title="2个话题">HttpServlet</a>
+       <a style="font-size:18pt;" 
+            href="http://www.enjoytoday.cn/tags/GenericServlet" title="1个话题">GenericServlet</a>
+       <a style="font-size:17pt;" 
+            href="http://www.enjoytoday.cn/tags/style" title="1个话题">style</a>
+       <a style="font-size:19pt;" 
+            href="http://www.enjoytoday.cn/tags/theme" title="1个话题">theme</a>
+       <a style="font-size:12pt;" 
+            href="http://www.enjoytoday.cn/tags/笔记" title="1个话题">笔记</a>
+       <a style="font-size:12pt;" 
+            href="http://www.enjoytoday.cn/tags/ip" title="1个话题">ip</a>
+       <a style="font-size:15pt;" 
+            href="http://www.enjoytoday.cn/tags/freegeo" title="1个话题">freegeo</a>
+       <a style="font-size:19pt;" 
+            href="http://www.enjoytoday.cn/tags/geo" title="1个话题">geo</a>
+       <a style="font-size:19pt;" 
+            href="http://www.enjoytoday.cn/tags/地址" title="1个话题">地址</a>
+       <a style="font-size:9pt;" 
+            href="http://www.enjoytoday.cn/tags/remote-config" title="1个话题">remote-config</a>
+       <a style="font-size:12pt;" 
+            href="http://www.enjoytoday.cn/tags/firebase" title="1个话题">firebase</a>
+       <a style="font-size:10pt;" 
+            href="http://www.enjoytoday.cn/tags/android" title="6个话题">android</a>
+       <a style="font-size:15pt;" 
+            href="http://www.enjoytoday.cn/tags/html解析" title="1个话题">html解析</a>
+       <a style="font-size:16pt;" 
+            href="http://www.enjoytoday.cn/tags/Binder" title="1个话题">Binder</a>
+       <a style="font-size:17pt;" 
+            href="http://www.enjoytoday.cn/tags/Toast" title="1个话题">Toast</a>
+       <a style="font-size:10pt;" 
+            href="http://www.enjoytoday.cn/tags/wrapper" title="2个话题">wrapper</a>
+       <a style="font-size:12pt;" 
+            href="http://www.enjoytoday.cn/tags/task" title="2个话题">task</a>
+       <a style="font-size:10pt;" 
+            href="http://www.enjoytoday.cn/tags/net" title="1个话题">net</a>
+       <a style="font-size:10pt;" 
+            href="http://www.enjoytoday.cn/tags/HTTP" title="2个话题">HTTP</a>
+       <a style="font-size:14pt;" 
+            href="http://www.enjoytoday.cn/tags/报文" title="1个话题">报文</a>
+       <a style="font-size:9pt;" 
+            href="http://www.enjoytoday.cn/tags/udp" title="1个话题">udp</a>
+       <a style="font-size:12pt;" 
+            href="http://www.enjoytoday.cn/tags/socket" title="2个话题">socket</a>
+       <a style="font-size:9pt;" 
+            href="http://www.enjoytoday.cn/tags/tcp" title="1个话题">tcp</a>
+       <a style="font-size:18pt;" 
+            href="http://www.enjoytoday.cn/tags/Effective" title="1个话题">Effective</a>
+       <a style="font-size:14pt;" 
+            href="http://www.enjoytoday.cn/tags/java" title="9个话题">java</a>
+       <a style="font-size:17pt;" 
+            href="http://www.enjoytoday.cn/tags/parcel" title="1个话题">parcel</a>
+       <a style="font-size:17pt;" 
+            href="http://www.enjoytoday.cn/tags/android studio" title="1个话题">android studio</a>
+       <a style="font-size:17pt;" 
+            href="http://www.enjoytoday.cn/tags/静态工厂模式" title="1个话题">静态工厂模式</a>
+       <a style="font-size:18pt;" 
+            href="http://www.enjoytoday.cn/tags/object" title="1个话题">object</a>
+       <a style="font-size:17pt;" 
+            href="http://www.enjoytoday.cn/tags/内存开销" title="1个话题">内存开销</a>
+       <a style="font-size:13pt;" 
+            href="http://www.enjoytoday.cn/tags/日记" title="2个话题">日记</a>
+       <a style="font-size:11pt;" 
+            href="http://www.enjoytoday.cn/tags/time" title="1个话题">time</a>
+       <a style="font-size:9pt;" 
+            href="http://www.enjoytoday.cn/tags/function" title="1个话题">function</a>
+       <a style="font-size:15pt;" 
+            href="http://www.enjoytoday.cn/tags/函数" title="1个话题">函数</a>
+       <a style="font-size:19pt;" 
+            href="http://www.enjoytoday.cn/tags/python" title="9个话题">python</a>
+       <a style="font-size:10pt;" 
+            href="http://www.enjoytoday.cn/tags/number" title="1个话题">number</a>
+       <a style="font-size:9pt;" 
+            href="http://www.enjoytoday.cn/tags/dependencies" title="1个话题">dependencies</a>
+       <a style="font-size:14pt;" 
+            href="http://www.enjoytoday.cn/tags/repositories" title="1个话题">repositories</a>
+       <a style="font-size:15pt;" 
+            href="http://www.enjoytoday.cn/tags/源码" title="1个话题">源码</a>
+       <a style="font-size:10pt;" 
+            href="http://www.enjoytoday.cn/tags/beforeEvaluate" title="1个话题">beforeEvaluate</a>
+       <a style="font-size:9pt;" 
+            href="http://www.enjoytoday.cn/tags/project" title="2个话题">project</a>
+       <a style="font-size:15pt;" 
+            href="http://www.enjoytoday.cn/tags/afterEvaluate" title="1个话题">afterEvaluate</a>
+       <a style="font-size:16pt;" 
+            href="http://www.enjoytoday.cn/tags/action" title="1个话题">action</a>
+       <a style="font-size:11pt;" 
+            href="http://www.enjoytoday.cn/tags/gradle" title="8个话题">gradle</a>
+       <a style="font-size:16pt;" 
+            href="http://www.enjoytoday.cn/tags/进制转化" title="1个话题">进制转化</a>
+       <a style="font-size:17pt;" 
+            href="http://www.enjoytoday.cn/tags/tomcat" title="1个话题">tomcat</a>
+       <a style="font-size:16pt;" 
+            href="http://www.enjoytoday.cn/tags/bug" title="6个话题">bug</a>
+       <a style="font-size:10pt;" 
+            href="http://www.enjoytoday.cn/tags/403" title="1个话题">403</a>
+       <a style="font-size:13pt;" 
+            href="http://www.enjoytoday.cn/tags/签名" title="1个话题">签名</a>
+       <a style="font-size:11pt;" 
+            href="http://www.enjoytoday.cn/tags/signapk" title="1个话题">signapk</a>
+       <a style="font-size:16pt;" 
+            href="http://www.enjoytoday.cn/tags/apk" title="1个话题">apk</a>
+       <a style="font-size:15pt;" 
+            href="http://www.enjoytoday.cn/tags/jarsigner" title="1个话题">jarsigner</a>
+       <a style="font-size:18pt;" 
+            href="http://www.enjoytoday.cn/tags/adb" title="1个话题">adb</a>
+       <a style="font-size:14pt;" 
+            href="http://www.enjoytoday.cn/tags/工程配置" title="1个话题">工程配置</a>
+   </div>
+</div><div id="archive" class="side_widget clearfix">
+ <h3 class="headline">文章归档</h3>
+   <ul>
+          <li><a href="http://www.enjoytoday.cn/archives/201710">2017年十月</a>(5)</li>
+      <li><a href="http://www.enjoytoday.cn/archives/201709">2017年九月</a>(1)</li>
+      <li><a href="http://www.enjoytoday.cn/archives/201708">2017年八月</a>(6)</li>
+      <li><a href="http://www.enjoytoday.cn/archives/201707">2017年七月</a>(8)</li>
+      <li><a href="http://www.enjoytoday.cn/archives/201706">2017年六月</a>(13)</li>
+      <li><a href="http://www.enjoytoday.cn/archives/201705">2017年五月</a>(9)</li>
+   </ul>
+</div><div id="friendlink" class="side_widget clearfix">
+   <h3 class="headline">友情链接</h3>
+   <ul>
+     
+   </ul>
+</div></div>
+    <div id="footer" class="clearfix">
+
+
+  <p id="copyright">
+  <!--  umeng统计 -->
+<script type="text/javascript" src="http://www.enjoytoday.cn/resource/umeng/umeng_statistics.js"></script>
+   <span id="powerby">Powered By Z-Blog</span><br/><br/>
+    <span class="copyright">版权所有 ©&nbsp;2017&nbsp;<a href="http://www.enjoytoday.cn">EnjoyToday</a></span>
+    <span class="icp">粤ICP备15100194号-1</span>
+  </p>
+  <a id="return_top" href="#">Return Top</a>
+</div>
+<script src="http://www.enjoytoday.cn/resource/js/jscript.js"></script></div>
+</body>
+</html>
