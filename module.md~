@@ -1,2 +1,0 @@
-## Python 模块
-Python 模块(Module)，是一个 Python 文件，以 .py 结尾，包含了 Python 对象定义和Python语句。模块能定义函数，类和变量，模块里也能包含可执行的代码。
