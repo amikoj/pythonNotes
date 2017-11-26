@@ -1,6 +1,9 @@
 #!/usr/bin/python   
-# -*- encoding;utf-8 -*-
+# -*- encoding:utf-8 -*-
 
+'''用于了解类的使用的'''
+
+__metaclass__ = type
 class User:
     'is a basic user info class'
     tag = "user"
@@ -41,6 +44,22 @@ class SubClass(User):
     
 
 a =SubClass()
-a.showName()
-a.showName()
+# a.showName()
+# a.showName()
+SubClass.showName(a) #简写方式.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     

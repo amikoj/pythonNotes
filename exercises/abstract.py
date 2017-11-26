@@ -1,7 +1,7 @@
 # !/usr/bin/env python
 # -*- encoding:utf-8 -*-
 
-import  sys
+import  sys,bisect
 
 '''
 抽象学习
@@ -38,6 +38,46 @@ def functionJudge():
     return  callable(x)
 
 
+def zipExec(title,description):
+    return zip(title,description)
+
+
+
+def collectionParams(title,*params):
+    '''
+    测试收集函数,类似于指针变量
+    :param title:
+    :param params:
+    :return:
+    '''
+    print "title:",title
+    print "\nparmas:",params
+
+
+
+def collectionDict(**dict):
+    '''
+    测试收集参数,类似于指针的指针.
+    :param dict:
+    :return:
+    '''
+    print "dict %(name)s" % dict       # "%(key)s" % dict 指定指定key的字典的数值.
+
+
+tip="global param"
+no_same="no same param"
+
+def squareParam():
+    '''
+    测试同名或者不同名的全局变量在方法区间内的使用,和在方法内定义全局变量
+    :return:
+    '''
+    global method    #声明全局，但不可直接赋值
+    method="method"
+    tip="method parm"
+    print "normal:",tip,no_same
+    print  "global:",globals()['tip'],no_same #内建函数，返回全局变量的数值
+
 
 
 if __name__=="__main__":
@@ -50,5 +90,20 @@ if __name__=="__main__":
     print list
     parametric(list)
     print  list
+    dict={}
+    dict['name']=['hfcai']
+    dict.setdefault("name",[]).append(4)
+    print dict
+    a= dict.setdefault
+    print a.__doc__
+    print zipExec("hfcai","is a man people.")
+
+    collectionDict(name="hfcai",value="name")
+
+    b=1
+    print vars(usefibs)  #内建函数
+    squareParam()
+    print method
+
 
 
