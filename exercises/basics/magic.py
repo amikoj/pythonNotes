@@ -34,12 +34,61 @@ class A(object):
 
 
 
+
+
+
+
+class B(object):
+     def __init__(self):
+         '有关property函数的使用.'
+         self.width = 10
+         self.height=100
+
+
+     def setSize(self,size):
+         self.width,self.height=size
+
+     def getSize(self):
+         return self.width,self.height
+
+     size=property(getSize)
+
+
+     def staticMethod():
+         print "this is a static  method."
+     staticMethod = staticmethod(staticMethod)
+
+     def classA(cls):
+         print "this is class method"
+     classA=classmethod(classA)
+
+
+     @staticmethod  #装饰器
+     def staticA():
+         print "this is static A method."
+
+     @classmethod
+     def classA(cls):
+         print "this is class A."
+
+
+
+
+
+
+
+
 if __name__ == "__main__":
     # magic("tet")   #need attention, python function can not dup..,  it will override before function define of the same of function.
-    a=A()
-    print len(a)
-    magic()
-
+    # a=A()
+    # print len(a)
+    # magic()
+    b=B()
+    print b.size
+    print b.classA()
+    print B.classA()
+    print B.staticMethod()
+    print B.staticA()
 
 
 
