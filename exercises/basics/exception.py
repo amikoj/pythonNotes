@@ -116,6 +116,9 @@ if __name__ == "__main__":
     with open(name="./struct.py",mode="rb+")  as file:
          print file.read()
 
+    iter()
+
+
 
 
 

@@ -45,6 +45,11 @@ class B(object):
          self.height=100
 
 
+
+     def __call__(self, *args, **kwargs):
+         print "[call,her,2]"
+
+
      def setSize(self,size):
          self.width,self.height=size
 
@@ -72,27 +77,68 @@ class B(object):
          print "this is class A."
 
 
+class Base(object):
+    def __new__(cls, *args, **kwargs):
+        print "__new__"
+        return object.__new__(cls)
 
 
+    def __init__(self):
+        print "__init__"
+
+    def __del__(self):
+        print "__del__"
+
+    @classmethod
+    def A(cls):
+        print "class method"
 
 
+    @staticmethod
+    def B():
+        print "static method"
 
+
+    def C(self):
+        print "this is self"
+
+
+    def __del__(self):
+        print "__del__"
 
 if __name__ == "__main__":
     # magic("tet")   #need attention, python function can not dup..,  it will override before function define of the same of function.
     # a=A()
     # print len(a)
     # magic()
-    b=B()
-    print b.size
-    print b.classA()
-    print B.classA()
-    print B.staticMethod()
-    print B.staticA()
+    # b=B()
+    # print b.size
+    # print b.classA()
+    # print B.classA()
+    # print B.staticMethod()
+    # print B.staticA()
+    # a=iter(b,"2")
+    # print  a.next()
+    a = Base()
+    try:
+        print "Begin transfer-----------------------------call by instance."
+        # call the class method
+        a.A()
+        # call static method
+        a.B()
+        # call the instance method
+        a.C()
 
+        print "Begin transfer------------------------------call by Class"
+        # call the class  method
+        Base.A()
+        # call static method
+        Base.B()
+        # call instance method
+        Base.C()
+    except Exception as e:
+        print e
 
-
-
-
+    del a
 
 
