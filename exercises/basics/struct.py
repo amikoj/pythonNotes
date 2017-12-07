@@ -17,7 +17,6 @@ def function(var1,var2="test"):
 # function("var1")
 
 
-
 class TestClass:
     DESCRIPTION = "class introduction"  # 类变量，可直接通过类名调用
     __test = "test"  # 属于私有，不可在类外部直接调用以“__”开头
@@ -25,14 +24,17 @@ class TestClass:
 
     def __init__(self,name):
         '测试类'
-        self.name=name #通过self可以创建类的实例变量
+
+        # 通过self可以创建类的实例变量
+        self.name=name
         print TestClass.__test
         print TestClass._single
 
 
 
 
-    def getName(self): #类的成员方法
+    def getName(self):
+        """类的成员方法"""
         return self.name
 
     def __getName(self): #private
