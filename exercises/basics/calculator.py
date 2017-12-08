@@ -61,17 +61,17 @@ def monocular(operator, *args):
     :return:the result of operation.
     """
     if len(args) > 0:
-        result = args[0]
+        result = float(args[0])
         try:
             for operand in args[1:]:
                 if operator in "+":
-                    result += operand
+                    result += float(operand)
                 elif operator in '-':
-                    result -= operand
+                    result -= float(operand)
                 elif operator in '*':
-                    result *= operand
+                    result *= float(operand)
                 elif operator in '/':
-                    result /=operand
+                    result /= float(operand)
         except Exception as e:
             print str(e)
             pass
@@ -81,11 +81,15 @@ def monocular(operator, *args):
         raise Exception("args must not be empty.")
 
 
-if __name__ == "__main":
+if __name__ == "__main__":
     """
       By  external call.
     """
-    print "main step."
+    # print "main step."
     # args of used.
-    args = sys.argv
-    monocular(args)
+    if len(sys.argv) >= 4:
+        print sys.a
+        args = sys.argv[1:]
+        result = monocular(args[0], *(args[1:]))
+        print "get result:", result
+
