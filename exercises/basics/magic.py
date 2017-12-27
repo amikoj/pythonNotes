@@ -107,6 +107,7 @@ class Base(object):
         print "__del__"
 
 if __name__ == "__main__":
+    file
     # magic("tet")   #need attention, python function can not dup..,  it will override before function define of the same of function.
     # a=A()
     # print len(a)
@@ -120,6 +121,7 @@ if __name__ == "__main__":
     # a=iter(b,"2")
     # print  a.next()
     a = Base()
+    
     try:
         print "Begin transfer-----------------------------call by instance."
         # call the class method
