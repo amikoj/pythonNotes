@@ -12,26 +12,25 @@ u'''
 
 '''
 
-#解释器
+# 解释器
 MY_MARKUP="lxml"
-#最近提交的
+# 最近提交的
 RECENT_POSTS_ID = "recent-posts-2"
-#所有文档按月份
+# 所有文档按月份
 ARCHIVES_ID = "archives-2"
-#按照标签分类
+# 按照标签分类
 CATEGORIES_ID = "categories-2"
 
-#filter of archives
+# filter of archives
 ARCHIVES_FILTER_ID = 'entry-title'
 
 
-
 def parseSpecies(tagInfo):
-    u'''
+    u"""
     用于解析对应项中的url.
-    :param tag:  [element.Tag] Tag标签,包裹ul,a
+    :param tagInfo:  [element.Tag] Tag标签,包裹ul,a
     :return: 返回一个字典,key为分类,value为指向的url.
-    '''
+    """
     dict = {}
     tagList = tagInfo.find_all(name='li')
     for tag in tagList:
@@ -41,7 +40,6 @@ def parseSpecies(tagInfo):
             dict[name] = url
         # print name, url
     return dict
-
 
 
 def getArticleInfo(url,filter):
@@ -61,7 +59,6 @@ def getArticleInfo(url,filter):
     return  alist
 
 
-
 def drawHistogram(list):
     '''
     draw histogram for list.
@@ -77,17 +74,16 @@ def drawHistogram(list):
     plt.show()
 
 
-
 main_html = urllib.urlopen("https://blog.jetbrains.com/kotlin")
 soup = BeautifulSoup(main_html,MY_MARKUP)
 recentPosts =  soup.find(id=RECENT_POSTS_ID)
 archives =  soup.find(id=ARCHIVES_ID)
 categories = soup.find(id=CATEGORIES_ID)
 
-dic = parseSpecies(archives)
+dic = parseSpecies(categories)
 list = []
 # print dic
 for name,url in dic.items():
-    list.append({"title":name,"count":len(getArticleInfo(url,ARCHIVES_FILTER_ID))})
+    list.append({"title":name[0:4],"count":len(getArticleInfo(url,ARCHIVES_FILTER_ID))})
 
 drawHistogram(list)
